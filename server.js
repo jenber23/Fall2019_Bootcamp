@@ -36,8 +36,11 @@ fs.readFile('listings.json', 'utf8', function(err, data) {
 
     HINT: Read up on JSON parsing Node.js
    */
-
     //Check for errors
+    function(err,data)
+    {
+
+    };
   
 
    //Save the sate in the listingData variable already defined
