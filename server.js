@@ -1,6 +1,3 @@
-//CODE BIT TO TEST IGT
-
-
 var http = require('http'), 
     fs = require('fs'), 
     url = require('url'),
@@ -9,56 +6,48 @@ var http = require('http'),
 /* Global variables */
 var listingData, server;
 
-var requestHandler = function(request, response) {
+var requestHandler = function(request, response) 
+{
   var parsedUrl = url.parse(request.url);
 
-  /*
-    Your request handler should send listingData in the JSON format as a response if a GET request 
-    is sent to the '/listings' path. Otherwise, it should send a 404 error. 
-
-    HINT: Explore the request object and its properties 
-    HINT: Explore the response object and its properties
-    https://code.tutsplus.com/tutorials/http-the-protocol-every-web-developer-must-know-part-1--net-31177
-    http://stackoverflow.com/questions/17251553/nodejs-request-object-documentation
-    
-    HINT: Explore how callback's work 
-    http://www.theprojectspot.com/tutorial-post/nodejs-for-beginners-callbacks/4
-    
-    HINT: Explore the list of MIME Types
-    https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types
-   */
+  if (request.method == 'GET' && parsedUrl.pathname == '/listings') 
+  {   
+    //send data, code 200, use JSON
+    response.writeHead(200, {'Content-Type': 'application/json'});
+    response.write(listingData);
+    console.log("Response and data sent.")
+  }
+  else 
+  {
+    //Send error text specified if not a data not properly handled
+    response.writeHead(404, {'Content-Type': 'text/plain'});
+    response.write("Bad gateway error");
+  }
+  response.end();
 };
-//fs.readfile(fileName,[options/flag], callback)
-//callback: error + data
-fs.readFile('listings.json', 'utf8', 
-    function(err, data) 
-    {
-
-      //if encounter error, output message
-      if(err) 
-        throw err;
-      //console.log(data);
-      listingData = data;
-      
-
-
-    }
-);
   /*
     This callback function should save the data in the listingData variable, 
     then start the server. 
- 
-    HINT: Check out this resource on fs.readFile
-    //https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback
+      format: fs.readfile(fileName,[options/flag], callback)
+        where callback uses error + data
+*/
+fs.readFile('listings.json', 'utf8', 
+    function(err, data) 
+    {
+      //Check for errors
+      if(err) 
+      {
+        console.log("Error thrown.")
+        throw err;
+      }
+      else // otherwise store the data into the global variable
+        listingData = data;
 
-    HINT: Read up on JSON parsing Node.js
-   */
-    //Check for errors
-    //function to detect an error + output appropriate error message
+      //create server through http
+    server = http.createServer(requestHandler);
+    //start server
+    server.listen(port); //where port is any arbitrary num
+    console.log("Server started.")
 
-    //Save the sate in the listingData variable already defined
-  
-
-  //Creates the server
-  
-  //Start the server
+  } 
+);
