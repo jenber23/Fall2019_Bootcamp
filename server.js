@@ -1,3 +1,6 @@
+//CODE BIT TO TEST IGT
+
+
 var http = require('http'), 
     fs = require('fs'), 
     url = require('url'),
@@ -25,30 +28,37 @@ var requestHandler = function(request, response) {
     https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types
    */
 };
+//fs.readfile(fileName,[options/flag], callback)
+//callback: error + data
+fs.readFile('listings.json', 'utf8', 
+    function(err, data) 
+    {
 
-fs.readFile('listings.json', 'utf8', function(err, data) {
+      //if encounter error, output message
+      if(err) 
+        throw err;
+      //console.log(data);
+      listingData = data;
+      
+
+
+    }
+);
   /*
     This callback function should save the data in the listingData variable, 
     then start the server. 
-
+ 
     HINT: Check out this resource on fs.readFile
     //https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback
 
     HINT: Read up on JSON parsing Node.js
    */
     //Check for errors
-    function(err,data)
-    {
+    //function to detect an error + output appropriate error message
 
-    };
-  
-
-   //Save the sate in the listingData variable already defined
+    //Save the sate in the listingData variable already defined
   
 
   //Creates the server
   
   //Start the server
-
-
-});
