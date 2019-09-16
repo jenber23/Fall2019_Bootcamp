@@ -9,25 +9,15 @@ var http = require('http'),
 /* Global variables */
 var listingData, server;
 
-var requestHandler = function(request, response) 
-{
-  var parsedUrl = url.parse(request.url);
+/*
+  function(request, response)
+https://www.w3schools.com/nodejs/met_http_createserver.asp
+  writeHead(200,{content-type...:json})
+  write(data or string)
+  end
 
-  if (request.method == 'GET' && parsedUrl.pathname == '/listings') 
-  {   
-    //send data, code 200, use JSON
-    response.writeHead(200, {'Content-Type': 'application/json'});
-    response.write(listingData);
-    console.log("Response and data sent.")
-  }
-  else 
-  {
-    //Send error text specified if not a data not properly handled
-    response.writeHead(404, {'Content-Type': 'text/plain'});
-    response.write("Bad gateway error");
-  }
-  response.end();
-};
+  */
+
   /*
     This callback function should save the data in the listingData variable, 
     then start the server. 
@@ -47,6 +37,7 @@ fs.readFile('listings.json', 'utf8',
         listingData = data;
 
       //create server through http
+      //call requestHandle variable function for request/response
     server = http.createServer(requestHandler);
     //start server
     server.listen(port); //where port is any arbitrary num
@@ -54,3 +45,24 @@ fs.readFile('listings.json', 'utf8',
 
   } 
 );
+
+var requestHandler = function(request, response) 
+{
+  var parsedUrl = url.parse(request.url);
+  console.log(request.url);
+
+  if (request.method == 'GET' && parsedUrl.pathname == '/listings') 
+  {   
+    //send data, code 200, use JSON
+    response.writeHead(200, {'Content-Type': 'application/json'});
+    response.write(listingData);
+    console.log("Response and data sent.")
+  }
+  else 
+  {
+    //Send error text specified if not a data not properly handled
+    response.writeHead(404, {'Content-Type': 'text/plain'});
+    response.write("Bad gateway error");
+  }
+  response.end();
+};
