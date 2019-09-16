@@ -49,7 +49,6 @@ fs.readFile('listings.json', 'utf8',
 var requestHandler = function(request, response) 
 {
   var parsedUrl = url.parse(request.url);
-  console.log(request.url);
 
   if (request.method == 'GET' && parsedUrl.pathname == '/listings') 
   {   
