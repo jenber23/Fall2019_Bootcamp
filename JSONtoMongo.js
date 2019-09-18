@@ -10,6 +10,8 @@ var fs = require('fs'),
     config = require('./config');
 
 /* Connect to your database using mongoose - remember to keep your key secret*/
+mongoose.connect(config.db.uri);
+
 //see https://mongoosejs.com/docs/connections.html
 //See https://docs.atlas.mongodb.com/driver-connection/
 
@@ -21,6 +23,24 @@ var fs = require('fs'),
   Remember that we needed to read in a file like we did in Bootcamp Assignment #1.
  */
 
+var list = fs.readFile('listings.json', 'utf8',function(err, jsonData){
+  if(err)
+    throw err;
+  
+  var arr = JSON.parse(jsonData);
+    //where data is an array
+  arr.entries.forEach(function(element)
+  {
+    var building  = new Listing(element);
+    building.save(function(err){
+      if(err)
+        throw err;
+      console.log('listing object added');
+    })
+  });
+  console.log('End of List!');
+
+ });
 
 /*  
   Check to see if it works: Once you've written + run the script, check out your MongoLab database to ensure that 
